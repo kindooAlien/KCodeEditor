@@ -45,10 +45,15 @@
   align-items: center;
   gap: 9px;
   font-size: 19px;
-  font-weight: 800;
+  font-weight: 700;
   letter-spacing: 0.5px;
   color: var(--docs-title);
   text-decoration: none;
+}
+
+.landing__nav-logo em {
+  font-style: normal;
+  color: var(--docs-accent);
 }
 
 .landing__nav-logo-img {

@@ -241,7 +241,7 @@ export default defineComponent({
               src={mode.value === 'dark' ? logoDarkUrl : logoLightUrl}
               alt="KCodeEditor logo"
             />
-            KCodeEditor
+            K<em>CodeEditor</em>
           </RouterLink>
           <nav class="landing__nav-links">
             <button type="button" class="landing__nav-link" onClick={() => scrollTo(featuresRef.value)}>特性</button>

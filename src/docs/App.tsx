@@ -77,8 +77,8 @@ export default defineComponent({
               alt="KCodeEditor logo"
             />
             <div class="docs__brand">
-              K<em>Editor</em>
-              <span class="docs__version">v0.4</span>
+              K<em>CodeEditor</em>
+              <span class="docs__version">v0.1.0</span>
             </div>
           </RouterLink>
           {NAV.map((group) => (
