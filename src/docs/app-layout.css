@@ -220,10 +220,8 @@
 }
 
 .docs__topbar-title {
-  font-size: 15px;
-  font-weight: 600;
+  font-size: 18px;
   color: var(--docs-title);
-  margin-left: 12px;
   margin-right: auto;
 }
 
