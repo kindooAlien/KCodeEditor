@@ -1,0 +1,88 @@
+/* 文档站全局基础样式：颜色全部走 CSS 变量，支持暗色（默认）/ 亮色主题切换 */
+
+:root {
+  --docs-bg: #141414;
+  --docs-sidebar-bg: #161616;
+  --docs-card-bg: #1a1a1a;
+  --docs-code-bg: #141414;
+  --docs-code-color: #9cdcfe;
+  --docs-border: #2c2c2c;
+  --docs-border-soft: #232323;
+  --docs-sidebar-border: #262626;
+  --docs-text: #e8e8e8;
+  --docs-title: #f0f0f0;
+  --docs-subtitle: #d8d8d8;
+  --docs-muted: #8a8a8a;
+  --docs-soft: #9a9a9a;
+  --docs-faint: #6a6a6a;
+  --docs-accent: #4fc08d;
+  --docs-accent-hover-bg: rgba(79, 192, 141, 0.08);
+  --docs-accent-active-bg: rgba(79, 192, 141, 0.1);
+  --docs-table-head-bg: #222222;
+  --docs-chip-bg: #222222;
+  --docs-btn-bg: #2a2a2a;
+  --docs-btn-border: #3a3a3a;
+  --docs-btn-text: #dddddd;
+  --docs-hover-bg: #222222;
+  --docs-scrollbar: #333333;
+  --docs-scrollbar-hover: #444444;
+}
+
+:root[data-theme='light'] {
+  --docs-bg: #f5f6f8;
+  --docs-sidebar-bg: #ffffff;
+  --docs-card-bg: #ffffff;
+  --docs-code-bg: #f8f9fb;
+  --docs-code-color: #0451a5;
+  --docs-border: #e3e5ea;
+  --docs-border-soft: #eaecef;
+  --docs-sidebar-border: #e8eaee;
+  --docs-text: #1f2329;
+  --docs-title: #171a1f;
+  --docs-subtitle: #2a2f36;
+  --docs-muted: #7a8190;
+  --docs-soft: #5f6774;
+  --docs-faint: #9aa1ad;
+  --docs-accent: #2f9e6e;
+  --docs-accent-hover-bg: rgba(47, 158, 110, 0.08);
+  --docs-accent-active-bg: rgba(47, 158, 110, 0.1);
+  --docs-table-head-bg: #f2f3f5;
+  --docs-chip-bg: #eef0f3;
+  --docs-btn-bg: #ffffff;
+  --docs-btn-border: #d4d7de;
+  --docs-btn-text: #2a2f36;
+  --docs-hover-bg: #f2f3f5;
+  --docs-scrollbar: #d0d3da;
+  --docs-scrollbar-hover: #b8bcc4;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--docs-bg);
+  color: var(--docs-text);
+  font-family: -apple-system, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--docs-scrollbar);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--docs-scrollbar-hover);
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}

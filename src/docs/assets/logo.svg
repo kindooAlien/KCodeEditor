@@ -1,0 +1,17 @@
+<svg width="96" height="96" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="KDesign K mark">
+  <!-- KDesign 官网 K 标志（KMarkLogo v2 · C2 近景保留方案）：白圆角底容器暗色版（底 #121c31 / 边 #22304a，与 kdesign-site tokens 暗色一致） -->
+  <rect x="0.5" y="0.5" width="63" height="63" rx="9" fill="#121c31" stroke="#22304a"/>
+  <!-- 竖干 3×蓝 -->
+  <rect x="-2.828427" y="-2.828427" width="5.656854" height="5.656854" rx="1.357645" fill="#1677FF" transform="translate(17.5 21.5) rotate(45)"/>
+  <rect x="-2.828427" y="-2.828427" width="5.656854" height="5.656854" rx="1.357645" fill="#1677FF" transform="translate(17.5 32) rotate(45)"/>
+  <rect x="-2.828427" y="-2.828427" width="5.656854" height="5.656854" rx="1.357645" fill="#1677FF" transform="translate(17.5 42.5) rotate(45)"/>
+  <!-- 交点大钻 + 右侧凹槽青钻 -->
+  <rect x="-4.242641" y="-4.242641" width="8.485281" height="8.485281" rx="2.036467" fill="#0958D9" transform="translate(30 32) rotate(45)"/>
+  <rect x="-2.12132" y="-2.12132" width="4.242641" height="4.242641" rx="1.018234" fill="#54C7C7" transform="translate(41.5 32) rotate(45)"/>
+  <!-- 上臂：青 → 绿 -->
+  <rect x="-2.828427" y="-2.828427" width="5.656854" height="5.656854" rx="1.357645" fill="#54C7C7" transform="translate(38.838835 23.161165) rotate(45)"/>
+  <rect x="-2.828427" y="-2.828427" width="5.656854" height="5.656854" rx="1.357645" fill="#52C41A" transform="translate(46.263456 15.736544) rotate(45)"/>
+  <!-- 下臂：浅绿 → 绿 -->
+  <rect x="-2.828427" y="-2.828427" width="5.656854" height="5.656854" rx="1.357645" fill="#73D13D" transform="translate(38.838835 40.838835) rotate(45)"/>
+  <rect x="-2.828427" y="-2.828427" width="5.656854" height="5.656854" rx="1.357645" fill="#52C41A" transform="translate(46.263456 48.263456) rotate(45)"/>
+</svg>

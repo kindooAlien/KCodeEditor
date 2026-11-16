@@ -1,0 +1,866 @@
+// KCodeEditor 样式（SCSS）：颜色/字号全部走 CSS 变量（tokens.scss 发射默认值），
+// theme prop 运行时以内联样式覆盖同名变量，便于 const 配置与双主题切换。
+@use './tokens' as *;
+
+.k-editor {
+  @include k-tokens;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: var(--k-editor-bg);
+  color: var(--k-editor-color);
+  font-family: Consolas, Menlo, Monaco, 'Courier New', monospace;
+  font-size: var(--k-editor-font-size);
+  line-height: var(--k-editor-line-height);
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--k-border);
+  cursor: text;
+}
+
+/* 内嵌搜索框 */
+.k-editor__search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: var(--k-search-bg);
+  border-bottom: 1px solid var(--k-border);
+}
+
+.k-editor__search-icon {
+  color: var(--k-muted);
+  font-size: 14px;
+}
+
+.k-editor__search-input {
+  flex: 1;
+  background: var(--k-search-input-bg);
+  border: 1px solid var(--k-search-input-border);
+  border-radius: 4px;
+  color: var(--k-editor-color);
+  font-family: inherit;
+  font-size: 12px;
+  padding: 4px 8px;
+  outline: none;
+}
+
+.k-editor__search-input:focus {
+  border-color: var(--k-accent);
+}
+
+/* 替换输入框：与关键词框同排，稍窄 */
+.k-editor__search-replace {
+  flex: 0.6;
+}
+
+/* 替换按钮 */
+.k-editor__search-btn {
+  background: transparent;
+  border: 1px solid var(--k-search-input-border);
+  border-radius: 4px;
+  color: var(--k-editor-color);
+  font-size: 12px;
+  padding: 4px 10px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.k-editor__search-btn:hover:not(:disabled) {
+  border-color: var(--k-accent);
+  background: var(--k-overlay-faint);
+}
+
+.k-editor__search-btn:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.k-editor__search-count {
+  color: var(--k-muted);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/* 主体：行号槽 + 内容区 */
+.k-editor__body {
+  display: flex;
+  align-items: stretch;
+}
+
+.k-editor__scroller {
+  flex: 1;
+  /* 默认最小高度（token 可覆盖）：短内容时编辑器不塌矮，与 max-height 同值成固定高度区 */
+  min-height: var(--k-scroller-min-height);
+  max-height: 440px;
+  overflow: auto;
+}
+
+.k-editor__content {
+  position: relative;
+  padding: 12px 16px;
+  /* 宽度取「最长行的宽度」与「可视区宽度」的较大者，
+     保证当前行高亮 / 斑马纹背景能铺满可视区，同时横向滚动时内容不被压缩 */
+  width: max-content;
+  min-width: 100%;
+  /* 关键：pre 保证空格/tab 原样占位，不被浏览器折叠 */
+  white-space: pre;
+}
+
+/* 折行模式（wordWrap）：宽度锁定可视区，超出部分换行显示，类似 VS Code 的 wordWrap */
+.k-editor__content.is-wrap {
+  width: 100%;
+  min-width: 0;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.k-editor__line {
+  min-height: var(--k-editor-line-height);
+}
+
+/* 缩进参考线：逐层级点状竖线，left 用 ch 单位对齐缩进列（等宽字体下 1ch = 1 字符宽）；
+   diff 行有 1.5ch 行首标记，由渲染层的 left 补偿 */
+.k-editor__guide {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  border-left: 1px dotted var(--k-guide-color);
+  pointer-events: none;
+}
+
+/* 折叠省略徽标：折叠起始行尾部的 ⋯，点击展开 */
+.k-editor__fold-ellipsis {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 0 6px;
+  border-radius: 3px;
+  background: var(--k-overlay-soft);
+  color: var(--k-muted);
+  font-size: 12px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.k-editor__fold-ellipsis:hover {
+  background: var(--k-overlay-strong);
+  color: var(--k-editor-color);
+}
+
+.k-editor__line.is-zebra {
+  background: var(--k-zebra-bg);
+}
+
+.k-editor__line.is-active {
+  background: var(--k-active-line-bg);
+}
+
+/* 行号槽 */
+.k-editor__gutter {
+  /* 总宽由行内容自然撑开（行号位数 ch + 折叠列 + 插槽内容），不写死像素 */
+  width: max-content;
+  flex: none;
+  overflow: hidden;
+  /* 与 scroller 同高：body 由两者中较高者决定，若 gutter 窗口内容高过 scroller（22 行×行高
+     + padding > 440px），行号会在滚动条下方多显示几行 → 滚动条悬空、行号与内容错位 */
+  max-height: var(--k-scroller-min-height);
+  background: var(--k-gutter-bg);
+  /* 不设右边框：斑马纹/高亮行背景需从行号槽连续覆盖到内容区，竖线会把色块切断 */
+  user-select: none;
+}
+
+.k-editor__gutter-inner {
+  padding: 12px 0;
+  will-change: transform;
+}
+
+.k-editor__gutter-row {
+  height: var(--k-editor-line-height);
+  line-height: var(--k-editor-line-height);
+  font-size: var(--k-editor-font-size);
+  padding: 0 10px 0 14px;
+  text-align: right;
+  color: var(--k-gutter-color);
+  font-variant-numeric: tabular-nums;
+  /* 三列语义布局（左对齐依次排列，列宽由列内容决定，行号列垂直成线不随插槽内容跳动）：
+     [折叠列 18px 占位] [行号列 var(--k-gutter-num-w)] [插槽列 内容自适应]
+     行高被折行撑高时行号对齐首视觉行 */
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 2px;
+}
+
+/* 行号列：宽度 = 总行数位数 ch（自适应），数字右对齐成一条竖线 */
+.k-editor__gutter-num {
+  flex: none;
+  width: var(--k-gutter-num-w);
+  text-align: right;
+}
+
+/* 插槽列：每行都渲染（无内容时空占位），拉伸到行高后内容垂直居中，宽度随内容自适应 */
+.k-editor__gutter-slot {
+  flex: none;
+  align-self: stretch;
+  display: inline-flex;
+  align-items: center;
+  min-width: 0;
+}
+
+/* 折叠列占位：不可折叠行的同宽空位（不可交互、不可见） */
+.k-editor__gutter-fold.is-placeholder {
+  visibility: hidden;
+}
+
+.k-editor__gutter-row.is-active {
+  color: var(--k-gutter-active-color);
+  background: var(--k-active-line-bg);
+}
+
+/* 行号槽斑马纹：与内容行奇偶同步，背景连续不断开 */
+.k-editor__gutter-row.is-zebra {
+  background: var(--k-zebra-bg);
+}
+
+/* 语法错误行：行号标红 */
+.k-editor__gutter-row.is-error {
+  color: var(--k-error-color);
+  font-weight: 600;
+}
+
+/* 行号槽标注图标：书签/警告/错误/信息（小圆点，每行可多个） */
+.k-editor__gutter-mark {
+  flex: none;
+  width: 10px;
+  font-size: 8px;
+  line-height: 1;
+  text-align: center;
+  user-select: none;
+}
+
+.k-editor__gutter-mark.is-gutter-bookmark { color: var(--k-gutter-mark-bookmark); }
+.k-editor__gutter-mark.is-gutter-warning { color: var(--k-gutter-mark-warning); }
+.k-editor__gutter-mark.is-gutter-error { color: var(--k-gutter-mark-error); }
+.k-editor__gutter-mark.is-gutter-info { color: var(--k-gutter-mark-info); }
+
+/* 折叠图标：− 表示可折叠（已展开），+ 表示已折叠（SVG 图标居中对齐，固定宽度防自定义图标拥挤） */
+.k-editor__gutter-fold {
+  flex: none;
+  width: 18px;
+  height: var(--k-editor-line-height);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: Consolas, monospace;
+  font-size: 13px;
+  cursor: pointer;
+  user-select: none;
+  border-radius: 3px;
+}
+
+.k-editor__gutter-fold svg,
+.k-editor__fold-trigger-line svg,
+.k-editor__fold-ellipsis svg {
+  display: block;
+}
+
+.k-editor__gutter-fold:hover {
+  color: var(--k-gutter-active-color);
+  background: var(--k-overlay-soft);
+}
+
+.k-editor__char {
+  display: inline;
+}
+
+.k-editor__char.is-selected {
+  background: var(--k-selection-bg);
+  color: #fff;
+  border-radius: 2px;
+}
+
+.k-editor__char.is-hit {
+  background: var(--k-hit-bg);
+  border-radius: 2px;
+}
+
+.k-editor__char.is-hit-active {
+  background: var(--k-hit-active-bg);
+  color: #1e1e1e;
+  border-radius: 2px;
+}
+
+/* ---- 范围标注（marks）：字符级装饰，可叠加在 token/命中/选区之上 ---- */
+/* 波浪线：SVG 平铺背景（跨字符连续，data-uri 无法引用 CSS 变量，颜色由 mark-strike-color 对齐） */
+.k-editor__char.is-mark-squiggle {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='4' viewBox='0 0 8 4'%3E%3Cpath d='M0 3 Q 2 1 4 3 T 8 3' fill='none' stroke='%23e5534b' stroke-width='1'/%3E%3C/svg%3E");
+  background-repeat: repeat-x;
+  background-position: left calc(100% - 1px);
+  background-size: 8px 4px;
+}
+
+/* 高亮背景 */
+.k-editor__char.is-mark-highlight {
+  background-color: var(--k-mark-highlight-bg);
+  border-radius: 2px;
+}
+
+/* 删除线 */
+.k-editor__char.is-mark-strike {
+  text-decoration: line-through;
+  text-decoration-color: var(--k-mark-strike-color);
+  text-decoration-thickness: 1.5px;
+}
+
+/* AI 幽灵补全虚影：灰色斜体，不参与选区/命中（非 k-editor__char） */
+.k-editor__ghost-char {
+  color: var(--k-ghost-color);
+  font-style: italic;
+  opacity: 0.85;
+}
+
+.k-editor__caret {
+  position: absolute;
+  width: 2px;
+  background: var(--k-caret-color);
+  pointer-events: none;
+  animation: k-editor-caret-blink 1.1s steps(1) infinite;
+  z-index: 2;
+}
+
+@keyframes k-editor-caret-blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+/* 隐藏输入捕获层：占 1px、完全透明，仅承接焦点与 IME */
+.k-editor__input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  border: none;
+  outline: none;
+  padding: 0;
+  margin: 0;
+  background: transparent;
+  color: transparent;
+  caret-color: transparent;
+  z-index: 3;
+}
+
+/* ---- 语法 token 着色（颜色由 theme 注入 CSS 变量） ---- */
+.k-editor__tok-string { color: var(--k-tok-string); }
+.k-editor__tok-number { color: var(--k-tok-number); }
+.k-editor__tok-comment { color: var(--k-tok-comment); font-style: italic; }
+.k-editor__tok-keyword { color: var(--k-tok-keyword); }
+.k-editor__tok-boolean { color: var(--k-tok-boolean); }
+.k-editor__tok-punct { color: var(--k-tok-punct); }
+.k-editor__tok-key { color: var(--k-tok-key); }
+.k-editor__tok-tag { color: var(--k-tok-tag); }
+.k-editor__tok-attr { color: var(--k-tok-attr); }
+
+/* ---- Git diff 行（GitLab 风格）：整行（含行号槽）统一浅色底，行首 +/- 标记列，无侧条 ---- */
+.k-editor__line.is-diff-added {
+  background: var(--k-diff-added-bg);
+}
+
+.k-editor__line.is-diff-removed {
+  background: var(--k-diff-removed-bg);
+}
+
+.k-editor__line.is-diff-modified {
+  background: var(--k-diff-modified-bg);
+}
+
+/* 行号槽同色底（GitLab 中行号单元格与内容同色调） */
+.k-editor__gutter-row.is-diff-added { background: var(--k-diff-added-bg); }
+.k-editor__gutter-row.is-diff-removed { background: var(--k-diff-removed-bg); }
+.k-editor__gutter-row.is-diff-modified { background: var(--k-diff-modified-bg); }
+
+/* 行首标记列：+ / - / ±，着色但不参与字符序列（不干扰 hitTest 与光标定位） */
+.k-editor__diff-sign {
+  display: inline-block;
+  width: 1.5ch;
+  text-align: center;
+  font-weight: 600;
+  user-select: none;
+}
+
+.k-editor__diff-sign.is-diff-added { color: var(--k-diff-added-color); }
+.k-editor__diff-sign.is-diff-removed { color: var(--k-diff-removed-color); }
+.k-editor__diff-sign.is-diff-modified { color: var(--k-diff-modified-color); }
+
+/* 词级 diff（GitLab modified 行内加深）：changedWords 片段加深底色 */
+.k-editor__char.is-diff-word {
+  background-color: var(--k-diff-word-bg);
+  border-radius: 2px;
+}
+
+/* ---- 行首折叠触发器（foldTrigger=line-start）：悬于行首左侧，不占文本空间 ---- */
+.k-editor__line {
+  position: relative;
+}
+
+.k-editor__fold-trigger-line {
+  position: absolute;
+  left: -18px;
+  top: 0;
+  width: 18px;
+  height: var(--k-editor-line-height);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  line-height: 1;
+  color: var(--k-gutter-color);
+  cursor: pointer;
+  user-select: none;
+  border-radius: 3px;
+}
+
+.k-editor__fold-trigger-line:hover {
+  color: var(--k-gutter-active-color);
+  background: var(--k-overlay-soft);
+}
+
+/* ---- Minimap 缩略图（canvas 分层：底图色带 + 视口框 overlay，拖拽帧只描框） ---- */
+.k-editor__minimap {
+  flex: none;
+  width: 64px;
+  height: auto;
+  align-self: stretch;
+  max-height: 440px;
+  position: relative;
+  background: var(--k-editor-bg);
+  cursor: pointer;
+  user-select: none;
+}
+
+.k-editor__minimap-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* ---- 状态栏 ---- */
+.k-editor__statusbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 3px 12px;
+  background: var(--k-statusbar-bg);
+  color: var(--k-statusbar-color);
+  font-size: 12px;
+  font-family: -apple-system, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+  border-top: 1px solid var(--k-statusbar-border);
+  user-select: none;
+}
+
+.k-editor__status-info {
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.k-editor__status-right {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.k-editor__status-btn {
+  /* label + 箭头图标同行垂直居中（svg 是块级，父级必须 flex 才不会换行） */
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+  background: transparent;
+  border: 1px solid transparent;
+  color: inherit;
+  font-size: 12px;
+  font-family: inherit;
+  padding: 2px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.k-editor__status-btn:hover {
+  border-color: var(--k-statusbar-hover-border);
+  background: var(--k-statusbar-hover-bg);
+}
+
+.k-editor__status-btn:active {
+  background: var(--k-statusbar-active-bg);
+}
+
+/* 语法校验指示 */
+.k-editor__status-diag {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  color: var(--k-error-color);
+}
+
+.k-editor__status-diag.is-ok {
+  color: var(--k-accent);
+}
+
+.k-editor__status-diag-icon {
+  display: inline-flex;
+  align-items: center;
+}
+
+/* 语言下拉（自绘 menu，替代原生 select）：触发器 + 上弹菜单（状态栏在底部，向上弹出） */
+.k-editor__status-dd {
+  position: relative;
+  display: inline-flex;
+  outline: none;
+  text-transform: capitalize;
+}
+
+.k-editor__status-btn.is-open {
+  border-color: var(--k-statusbar-hover-border);
+  background: var(--k-statusbar-hover-bg);
+}
+
+.k-editor__status-btn svg {
+  /* 间距由父级 flex gap 承担，不再用 margin-left */
+  display: block;
+}
+
+.k-editor__status-dd-menu {
+  position: absolute;
+  bottom: calc(100% + 6px);
+  right: 0;
+  min-width: 120px;
+  max-height: 220px;
+  overflow: auto;
+  padding: 4px;
+  background: var(--k-option-bg);
+  color: var(--k-option-color);
+  border: 1px solid var(--k-statusbar-border);
+  border-radius: 6px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+  z-index: 6;
+}
+
+.k-editor__status-dd-item {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: none;
+  color: inherit;
+  font-size: 12px;
+  font-family: inherit;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.k-editor__status-dd-item.is-hover {
+  background: var(--k-statusbar-hover-bg);
+}
+
+.k-editor__status-dd-item.is-active {
+  color: var(--k-caret-color);
+  font-weight: 600;
+}
+
+/* ---- 标注悬停浮层（VS Code 式自绘）：纯黑底，坐标由实测尺寸翻转/钳制计算 ---- */
+.k-editor__hover {
+  position: absolute;
+  transform: translateX(-50%);
+  max-width: 320px;
+  padding: 5px 10px;
+  background: var(--k-hover-bg);
+  color: var(--k-hover-color);
+  border: 1px solid var(--k-hover-border);
+  border-radius: 6px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+  font-size: 12px;
+  line-height: 1.5;
+  font-family: -apple-system, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+  white-space: pre-wrap;
+  word-break: break-all;
+  pointer-events: none;
+  z-index: 5;
+}
+
+/* 翻转到字符下方时（上方空间不足） */
+.k-editor__hover.is-below {
+  transform: translateX(-50%);
+}
+
+/* 波浪线（诊断/废弃）类提示用强调色文字 */
+.k-editor__hover.is-type-squiggle {
+  color: var(--k-hover-error-color);
+  border-color: rgba(229, 83, 75, 0.4);
+}
+
+.k-editor__hover.is-type-squiggle::before {
+  content: '⚠ ';
+  color: var(--k-hover-warning-color);
+}
+
+/* ---- 代码评论（Git/GitLab 讨论卡风格：头像+作者+时间头部条、缩进回复、绿色已解决条） ----
+   表单强调色统一走 comment-accent（绿色）：输入框边框 / 按钮 / 链接 / 行号槽「+」 */
+.k-editor__comment-wrap {
+  /* 上下间距必须用 padding 而非 margin：布局偏移表按 offsetHeight（含 padding、不含 margin）实测回填 */
+  margin: 0 8px;
+  padding: 2px 0 6px;
+  /* 评论卡不随代码区等宽字体/行高走 */
+  font-family: -apple-system, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--k-comment-color);
+}
+
+.k-editor__comment-thread {
+  background: var(--k-comment-bg);
+  border: 1px solid var(--k-comment-border);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+/* 头部条：头像 + 作者 + 时间 + 操作链接（GitLab 讨论卡灰底头部） */
+.k-editor__comment-head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  background: var(--k-comment-head-bg);
+}
+
+.k-editor__comment-avatar {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1;
+  user-select: none;
+}
+
+.k-editor__comment-author {
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.k-editor__comment-time {
+  font-size: 11px;
+  color: var(--k-comment-muted);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.k-editor__comment-actions {
+  margin-left: auto;
+  display: inline-flex;
+  gap: 8px;
+}
+
+.k-editor__comment-link {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font: inherit;
+  font-size: 12px;
+  color: var(--k-comment-accent);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.k-editor__comment-link:hover {
+  text-decoration: underline;
+}
+
+.k-editor__comment-body {
+  padding: 6px 10px 8px;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* 回复卡：缩进 + 上边框分隔（每条回复独立灰底头部，与 GitLab note 列表一致） */
+.k-editor__comment-card.is-reply {
+  border-top: 1px solid var(--k-comment-border);
+}
+
+.k-editor__comment-card.is-reply .k-editor__comment-head {
+  padding-left: 30px;
+}
+
+/* 「回复」触发行：虚线边框细条，点击展开输入框 */
+.k-editor__comment-reply-trigger {
+  display: block;
+  width: calc(100% - 20px);
+  margin: 0 10px 8px;
+  padding: 4px 8px;
+  background: transparent;
+  border: 1px dashed var(--k-comment-border);
+  border-radius: 4px;
+  color: var(--k-comment-muted);
+  font: inherit;
+  font-size: 12px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.k-editor__comment-reply-trigger:hover {
+  border-color: var(--k-comment-accent);
+  color: var(--k-comment-accent);
+}
+
+/* 行内回复框（折叠后隐藏） */
+.k-editor__comment-composer {
+  border-top: 1px solid var(--k-comment-border);
+  padding: 8px 10px;
+}
+
+.k-editor__comment-input {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  min-height: 56px;
+  resize: vertical;
+  background: var(--k-comment-input-bg);
+  color: var(--k-comment-color);
+  border: 1px solid var(--k-comment-accent-border);
+  border-radius: 4px;
+  padding: 6px 8px;
+  font: inherit;
+  font-size: 12px;
+  line-height: 1.5;
+  outline: none;
+}
+
+.k-editor__comment-input:focus {
+  border-color: var(--k-comment-accent);
+}
+
+.k-editor__comment-composer-btns {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.k-editor__comment-btn {
+  padding: 3px 12px;
+  font: inherit;
+  font-size: 12px;
+  border-radius: 4px;
+  border: 1px solid var(--k-comment-accent-border);
+  background: transparent;
+  color: var(--k-comment-color);
+  cursor: pointer;
+}
+
+.k-editor__comment-btn:hover {
+  border-color: var(--k-comment-accent);
+  color: var(--k-comment-accent);
+}
+
+.k-editor__comment-btn.is-primary {
+  background: var(--k-comment-accent);
+  border-color: var(--k-comment-accent);
+  color: #fff;
+}
+
+.k-editor__comment-btn.is-primary:hover {
+  opacity: 0.9;
+  color: #fff;
+}
+
+/* 已解决折叠条：绿色 ✓ 细横条（GitLab resolved 讨论），点击展开完整线程 */
+.k-editor__comment-thread.is-resolved {
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 4px;
+}
+
+.k-editor__comment-thread.is-resolved .k-editor__comment-resolved-bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  color: var(--k-comment-resolved);
+  background: var(--k-comment-resolved-bg);
+  cursor: pointer;
+  user-select: none;
+}
+
+.k-editor__comment-thread.is-resolved .k-editor__comment-resolved-bar:hover {
+  background: var(--k-comment-resolved-bg);
+}
+
+/* 展开后的已解决线程：保留绿色左边条提示状态 */
+.k-editor__comment-thread.is-resolved-open {
+  border-left: 3px solid var(--k-comment-resolved);
+}
+
+.k-editor__comment-collapse {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-top: 1px solid var(--k-comment-border);
+  font-size: 12px;
+  color: var(--k-comment-muted);
+  cursor: pointer;
+  user-select: none;
+}
+
+.k-editor__comment-collapse:hover {
+  color: var(--k-comment-accent);
+}
+
+/* ---- 行号槽评论配套：等高占位（与内容区评论块同步） + 悬停「+」发起评论按钮 ---- */
+.k-editor__gutter-comment-space {
+  background: transparent;
+}
+
+.k-editor__gutter-add {
+  flex: none;
+  width: 14px;
+  height: 14px;
+  margin: 0 2px;
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: Consolas, monospace;
+  font-size: 12px;
+  line-height: 1;
+  color: var(--k-comment-accent);
+  background: transparent;
+  opacity: 0;
+  transition: opacity 0.12s ease;
+  cursor: pointer;
+  user-select: none;
+}
+
+/* 悬停行号槽（或按钮本身）时显现；已点击的发起行常显 */
+.k-editor__gutter-row:hover .k-editor__gutter-add,
+.k-editor__gutter-add:hover {
+  opacity: 1;
+}
+
+.k-editor__gutter-add:hover {
+  background: var(--k-comment-accent);
+  color: #fff;
+}

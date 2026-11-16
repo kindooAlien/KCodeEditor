@@ -1,0 +1,112 @@
+// KEditor 设计令牌（Design Tokens）——暗色默认值的单一事实来源
+// - `@include k-tokens` 把整个 map 发射为 .k-editor 作用域的 CSS 自定义属性（--k-*）
+// - 运行时 theme prop 以内联样式注入同名变量（内联优先级恒高于此处发射的默认值）
+// - 亮色场景：业务可传 LIGHT_EDITOR_THEME（token 级覆盖），或在外层容器用 CSS 变量覆写
+//   （见文档站 docs.css 的 :root[data-theme='light'] 块）
+// - 新增视觉能力时先在 map 里登记 token，再在 editor.scss 里引用 var(--k-<name>)
+
+$k-editor-tokens: (
+  // ---- 基础画布 ----
+  'editor-bg': #1e1e1e,
+  'editor-color': #d4d4d4,
+  'editor-font-size': 14px,
+  'editor-line-height': 22px,
+  'border': #333,
+  'accent': #4fc08d,
+  'muted': #8a8a8a,
+  'error-color': #e5534b,
+
+  // ---- 滚动区（默认最小高度：短内容时编辑器不塌矮，与 max-height 同值） ----
+  'scroller-min-height': 440px,
+
+  // ---- 悬浮层统一透明度阶（hover 加亮/按钮反馈） ----
+  'overlay-faint': rgba(255, 255, 255, 0.06),
+  'overlay-soft': rgba(255, 255, 255, 0.08),
+  'overlay-strong': rgba(255, 255, 255, 0.16),
+
+  // ---- 选区 / 光标 / 当前行 / 斑马纹 ----
+  'selection-bg': #264f78,
+  'caret-color': #aeafad,
+  'zebra-bg': rgba(255, 255, 255, 0.025),
+
+  // ---- 缩进参考线（VS Code 风格层级点状竖线） ----
+  'guide-color': rgba(148, 163, 184, 0.32),
+  'active-line-bg': rgba(79, 192, 141, 0.09),
+
+  // ---- 搜索 / 替换 ----
+  'search-bg': #252526,
+  'search-input-bg': #1e1e1e,
+  'search-input-border': #3c3c3c,
+  'hit-bg': rgba(234, 158, 54, 0.32),
+  'hit-active-bg': #eabe54,
+
+  // ---- 行号槽 ----
+  'gutter-bg': #1b1b1b,
+  'gutter-color': #6e7681,
+  'gutter-active-color': #e8e8e8,
+  'gutter-num-w': 2ch, // 运行时按行数位数动态覆盖（CodeGutter gutterVars）
+  'gutter-mark-bookmark': #e8b23f,
+  'gutter-mark-warning': #f0883e,
+  'gutter-mark-error': #e5534b,
+  'gutter-mark-info': #58a6ff,
+
+  // ---- 范围标注 / 幽灵补全 ----
+  'mark-highlight-bg': rgba(255, 213, 0, 0.26),
+  'mark-strike-color': #e5534b,
+  'ghost-color': #7a7a7a,
+
+  // ---- 悬停浮层（VS Code 式纯黑底） ----
+  'hover-bg': #1e1e1e,
+  'hover-color': #d4d4d4,
+  'hover-border': rgba(255, 255, 255, 0.14),
+  'hover-error-color': #ff7b72,
+  'hover-warning-color': #f0883e,
+
+  // ---- diff（GitLab Pajamas 暗色近似） ----
+  'diff-added-bg': rgba(63, 185, 80, 0.14),
+  'diff-removed-bg': rgba(248, 81, 73, 0.14),
+  'diff-modified-bg': rgba(59, 130, 246, 0.12),
+  'diff-added-color': #3fb950,
+  'diff-removed-color': #f85149,
+  'diff-modified-color': #58a6ff,
+  'diff-word-bg': rgba(65, 131, 196, 0.45),
+
+  // ---- 语法 token（VS Code Dark+ 基准，theme.tokenColors 运行时覆盖） ----
+  'tok-string': #ce9178,
+  'tok-number': #b5cea8,
+  'tok-comment': #6a9955,
+  'tok-keyword': #569cd6,
+  'tok-boolean': #569cd6,
+  'tok-punct': #d4d4d4,
+  'tok-key': #9cdcfe,
+  'tok-tag': #569cd6,
+  'tok-attr': #92c5f8,
+
+  // ---- 状态栏 / 下拉 ----
+  'statusbar-bg': #252526,
+  'statusbar-color': #cccccc,
+  'statusbar-border': #333,
+  'statusbar-hover-border': #4a4a4a,
+  'statusbar-hover-bg': rgba(255, 255, 255, 0.06),
+  'statusbar-active-bg': rgba(255, 255, 255, 0.12),
+  'option-bg': #252526,
+  'option-color': #cccccc,
+
+  // ---- 代码评论（Git/GitLab 讨论卡；强调色统一绿色 accent） ----
+  'comment-bg': #252526,
+  'comment-head-bg': rgba(255, 255, 255, 0.04),
+  'comment-border': #3c3c3c,
+  'comment-color': #cccccc,
+  'comment-muted': #8a8a8a,
+  'comment-accent': #4fc08d,
+  'comment-accent-border': rgba(79, 192, 141, 0.55),
+  'comment-input-bg': #1e1e1e,
+  'comment-resolved': #57c48f,
+  'comment-resolved-bg': rgba(63, 185, 80, 0.1),
+);
+
+@mixin k-tokens {
+  @each $name, $value in $k-editor-tokens {
+    --k-#{$name}: #{$value};
+  }
+}

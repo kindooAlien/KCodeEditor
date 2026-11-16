@@ -1,0 +1,21 @@
+# 依赖
+node_modules/
+
+# 构建产物
+dist/
+
+# 日志与临时文件
+*.log
+*.tmp
+.DS_Store
+Thumbs.db
+
+# 浏览器自动化临时 profile
+tmp/
+
+# 过程验证截图（项目资产只用 svg）
+*.png
+
+# 编辑器
+.idea/
+.vscode/

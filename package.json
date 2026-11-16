@@ -1,0 +1,59 @@
+{
+  "name": "k-code-editor",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "KEditor —— 数据驱动的逐字符代码编辑组件（Vue3 + TypeScript + TSX）",
+  "keywords": [
+    "vue",
+    "vue3",
+    "code-editor",
+    "editor",
+    "syntax-highlight",
+    "typescript"
+  ],
+  "license": "MIT",
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/k-code-editor.cjs.js",
+  "module": "./dist/k-code-editor.es.js",
+  "types": "./dist/types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/types/index.d.ts",
+      "import": "./dist/k-code-editor.es.js",
+      "require": "./dist/k-code-editor.cjs.js"
+    },
+    "./style.css": "./dist/k-code-editor.css"
+  },
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "build:lib": "vite build --config vite.config.lib.ts && vue-tsc -p tsconfig.lib.json",
+    "preview": "vite preview",
+    "typecheck": "vue-tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "peerDependencies": {
+    "vue": "^3.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.6",
+    "@vitejs/plugin-vue": "^5.2.1",
+    "@vitejs/plugin-vue-jsx": "^4.1.1",
+    "sass-embedded": "^1.108.2",
+    "typescript": "^5.7.3",
+    "vite": "^6.0.7",
+    "vitest": "^5.1.0",
+    "vue": "^3.5.13",
+    "vue-router": "^4.6.5",
+    "vue-tsc": "^2.2.0"
+  },
+  "allowScripts": {
+    "esbuild@0.25.12": true
+  }
+}

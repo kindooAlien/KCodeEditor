@@ -1,0 +1,244 @@
+/* 文档站布局样式：颜色全部走 CSS 变量（global.css 定义），支持明暗切换
+ * 布局基准：左侧品牌区与右侧顶栏统一 56px 高度带，分隔线在同一水平线对齐 */
+
+.docs {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* 顶栏高度基准（品牌区 / 顶栏共用） */
+.docs__sidebar {
+  --topbar-h: 56px;
+
+  width: 232px;
+  flex: none;
+  border-right: 1px solid var(--docs-sidebar-border);
+  background: var(--docs-sidebar-bg);
+  padding: 0;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--docs-border) transparent;
+}
+
+/* 细滚动条（Webkit）：仅 hover 侧栏时渐显 */
+.docs__sidebar::-webkit-scrollbar {
+  width: 4px;
+}
+
+.docs__sidebar::-webkit-scrollbar-thumb {
+  background: transparent;
+  border-radius: 2px;
+}
+
+.docs__sidebar:hover::-webkit-scrollbar-thumb {
+  background: var(--docs-border);
+}
+
+/* 品牌 logo 盒子：与右侧顶栏同高同分隔线，构成一条完整顶部水平带；
+ * 整体可点击返回门户首页（RouterLink） */
+.docs__brand-row {
+  height: var(--topbar-h);
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 0 16px;
+  border-bottom: 1px solid var(--docs-sidebar-border);
+  background: var(--docs-sidebar-bg);
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  text-decoration: none;
+  transition: background 0.15s;
+}
+
+.docs__brand-row:hover .docs__brand {
+  color: var(--docs-accent);
+}
+
+/* 品牌 Logo（来自 KDesignUI 的菱形鳞片标志） */
+.docs__logo {
+  width: 28px;
+  height: 28px;
+  flex: none;
+}
+
+.docs__brand {
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--docs-title);
+  letter-spacing: 0.5px;
+  line-height: 1;
+}
+
+.docs__brand em {
+  font-style: normal;
+  color: var(--docs-accent);
+}
+
+.docs__version {
+  display: inline-block;
+  margin-left: 8px;
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 1;
+  color: var(--docs-muted);
+  background: var(--docs-chip-bg);
+  border: 1px solid var(--docs-border);
+  border-radius: 10px;
+  padding: 3px 8px;
+  transform: translateY(1px);
+}
+
+/* 明暗主题切换按钮（顶栏右侧） */
+.docs__theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--docs-chip-bg);
+  border: 1px solid var(--docs-border);
+  color: var(--docs-muted);
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  cursor: pointer;
+  flex: none;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.docs__theme-toggle:hover {
+  color: var(--docs-accent);
+  border-color: var(--docs-accent);
+}
+
+.docs__nav-group {
+  padding: 12px 10px 0;
+  margin-bottom: 4px;
+}
+
+.docs__nav-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--docs-faint);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 4px 10px 6px;
+}
+
+.docs__nav-item {
+  position: relative;
+  display: block;
+  padding: 7px 10px;
+  margin: 2px 0;
+  border-radius: 6px;
+  color: var(--docs-muted);
+  font-size: 13px;
+  line-height: 1.5;
+  text-decoration: none;
+  transition: background 0.15s, color 0.15s;
+}
+
+.docs__nav-item:hover {
+  color: var(--docs-text);
+  background: var(--docs-hover-bg);
+}
+
+/* 激活项：accent 左侧指示条 + 淡 accent 底 */
+.docs__nav-item.is-active {
+  color: var(--docs-accent);
+  background: var(--docs-accent-active-bg);
+}
+
+.docs__nav-item.is-active::before {
+  content: '';
+  position: absolute;
+  left: -10px;
+  top: 20%;
+  bottom: 20%;
+  width: 2px;
+  border-radius: 1px;
+  background: var(--docs-accent);
+}
+
+.docs__content {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 右侧内容区顶部固定 header：页面标题 + 主题切换，与品牌区同高；
+ * 磨砂半透明底，滚动时内容从下方穿过有模糊层次 */
+.docs__topbar {
+  --topbar-h: 56px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 0 40px;
+  height: var(--topbar-h);
+  flex: none;
+  background: color-mix(in srgb, var(--docs-bg) 78%, transparent);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--docs-sidebar-border);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.docs__topbar-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--docs-title);
+}
+
+/* 亮色模式：--docs-bg 是浅灰（#f5f6f8），顶栏按用户预期改为白色底（保留轻微透明让磨砂层次可见） */
+:root[data-theme='light'] .docs__topbar {
+  background: color-mix(in srgb, #ffffff 85%, transparent);
+}
+
+.docs__main {
+  flex: 1;
+  min-width: 0;
+  padding: 32px 40px 80px;
+}
+
+.docs__page-title {
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--docs-title);
+  margin-bottom: 20px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--docs-sidebar-border);
+}
+
+/* 窄屏：侧边栏收为顶部横向导航 */
+@media (max-width: 768px) {
+  .docs {
+    flex-direction: column;
+  }
+
+  .docs__sidebar {
+    position: static;
+    width: 100%;
+    height: auto;
+    border-right: none;
+    border-bottom: 1px solid var(--docs-sidebar-border);
+  }
+
+  .docs__brand-row {
+    position: static;
+  }
+
+  .docs__main {
+    padding: 20px 16px 60px;
+  }
+
+  .docs__topbar {
+    padding: 0 16px;
+  }
+}

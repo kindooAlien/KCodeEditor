@@ -1,0 +1,12 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": false,
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "rootDir": "src/keditor",
+    "outDir": "dist/types"
+  },
+  "include": ["src/keditor/**/*.ts", "src/keditor/**/*.tsx"],
+  "exclude": ["src/keditor/**/__tests__/**"]
+}

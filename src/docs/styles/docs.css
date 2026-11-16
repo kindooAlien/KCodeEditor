@@ -1,0 +1,417 @@
+/* 文档站内容区组件样式：颜色全部走 CSS 变量（global.css 定义），支持明暗切换 */
+
+/* ---- 演示块 ---- */
+.demo-block {
+  border: 1px solid var(--docs-border);
+  border-radius: 10px;
+  margin-bottom: 32px;
+  overflow: hidden;
+  background: var(--docs-card-bg);
+}
+
+.demo-block__header {
+  border-bottom: 1px solid var(--docs-border-soft);
+}
+
+.demo-block__title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--docs-subtitle);
+  padding: 14px 18px 0;
+}
+
+.demo-block__desc {
+  font-size: 13px;
+  color: var(--docs-muted);
+  padding: 6px 18px 14px;
+  line-height: 1.7;
+}
+
+/* 无描述时标题区也保留内边距与下划线观感 */
+.demo-block__header > .demo-block__title:last-child {
+  padding-bottom: 14px;
+}
+
+/* 主体：演示（左）+ 代码（右）；窄屏自动切上下 */
+.demo-block__body {
+  display: grid;
+  grid-template-columns: minmax(0, 11fr) minmax(0, 9fr);
+  align-items: stretch;
+}
+
+.demo-block__preview {
+  padding: 18px;
+  border-right: 1px solid var(--docs-border);
+  min-width: 0;
+}
+
+/* 代码面板：写法 tab + 源码 */
+.demo-block__code-panel {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  background: var(--docs-code-bg);
+}
+
+.demo-block__tabs {
+  display: flex;
+  gap: 6px;
+  padding: 10px 14px 0;
+}
+
+.demo-block__tab {
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  color: var(--docs-muted);
+  font-size: 12px;
+  cursor: pointer;
+  padding: 4px 10px;
+  transition: color 0.15s, background 0.15s;
+}
+
+.demo-block__tab:hover {
+  color: var(--docs-text);
+}
+
+.demo-block__tab.is-active {
+  color: var(--docs-accent);
+  background: var(--docs-accent-hover-bg);
+}
+
+.demo-block__code {
+  margin: 0;
+  background: transparent;
+  padding: 14px 16px;
+  font-family: Consolas, Menlo, Monaco, 'Courier New', monospace;
+  font-size: 12.5px;
+  line-height: 20px;
+  color: var(--docs-code-color);
+  white-space: pre;
+  overflow: auto;
+  max-height: 560px;
+  flex: 1;
+  min-height: 0;
+}
+
+.demo-block__footer {
+  border-top: 1px solid var(--docs-border);
+  padding: 8px 14px;
+}
+
+.demo-block__toggle {
+  background: transparent;
+  border: none;
+  color: var(--docs-accent);
+  font-size: 12px;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.demo-block__toggle:hover {
+  background: var(--docs-accent-hover-bg);
+}
+
+.demo-block__arrow {
+  display: inline-block;
+  margin-left: 4px;
+  transition: transform 0.2s;
+}
+
+.demo-block__arrow.is-open {
+  transform: rotate(180deg);
+}
+
+/* pad / 手机：演示与代码上下排列 */
+@media (max-width: 960px) {
+  .demo-block__body {
+    grid-template-columns: 1fr;
+  }
+
+  .demo-block__preview {
+    border-right: none;
+    border-bottom: 1px solid var(--docs-border);
+  }
+}
+
+/* ---- API 表格 ---- */
+.api-table {
+  border: 1px solid var(--docs-border);
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 28px;
+  overflow-x: auto;
+}
+
+.api-table table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.api-table th {
+  text-align: left;
+  background: var(--docs-table-head-bg);
+  color: var(--docs-muted);
+  font-weight: 600;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--docs-border);
+  white-space: nowrap;
+}
+
+.api-table td {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--docs-border-soft);
+  color: var(--docs-muted);
+  vertical-align: top;
+}
+
+.api-table tr:last-child td {
+  border-bottom: none;
+}
+
+.api-table td:first-child {
+  color: var(--docs-accent);
+  font-family: Consolas, Menlo, monospace;
+  font-size: 12.5px;
+  white-space: nowrap;
+}
+
+/* ---- 通用排版 ---- */
+.page-desc {
+  font-size: 14px;
+  color: var(--docs-soft);
+  line-height: 1.8;
+  margin-bottom: 24px;
+}
+
+.page-desc code {
+  background: var(--docs-chip-bg);
+  border: 1px solid var(--docs-border);
+  border-radius: 4px;
+  padding: 1px 6px;
+  font-family: Consolas, Menlo, monospace;
+  font-size: 12.5px;
+  color: var(--docs-code-color);
+}
+
+.page-subtitle {
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--docs-subtitle);
+  margin: 28px 0 12px;
+}
+
+.page-pre {
+  background: var(--docs-code-bg);
+  border: 1px solid var(--docs-border);
+  border-radius: 10px;
+  padding: 16px 18px;
+  font-family: Consolas, Menlo, Monaco, 'Courier New', monospace;
+  font-size: 12.5px;
+  line-height: 20px;
+  color: var(--docs-code-color);
+  white-space: pre;
+  overflow: auto;
+  margin-bottom: 24px;
+}
+
+.demo-toolbar {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.demo-btn {
+  background: var(--docs-btn-bg);
+  color: var(--docs-btn-text);
+  border: 1px solid var(--docs-btn-border);
+  border-radius: 6px;
+  padding: 5px 13px;
+  font-size: 12.5px;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.demo-btn:hover {
+  border-color: var(--docs-accent);
+}
+
+.demo-btn.is-on {
+  color: var(--docs-accent);
+  border-color: var(--docs-accent);
+}
+
+/* ---- demo 层自绘下拉（DemoSelect，不用原生 select）---- */
+.demo-select {
+  position: relative;
+  display: inline-block;
+}
+
+.demo-select-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 210px;
+  background: var(--docs-btn-bg);
+  color: var(--docs-btn-text);
+  border: 1px solid var(--docs-btn-border);
+  border-radius: 6px;
+  padding: 5px 10px;
+  font-size: 12.5px;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.demo-select-trigger:hover,
+.demo-select-trigger.is-open {
+  border-color: var(--docs-accent);
+}
+
+.demo-select-label {
+  flex: 1;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.demo-select-arrow {
+  flex-shrink: 0;
+  transition: transform 0.15s;
+}
+
+.demo-select-trigger.is-open .demo-select-arrow {
+  transform: rotate(180deg);
+}
+
+.demo-select-menu {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  z-index: 30;
+  min-width: 100%;
+  max-height: 288px;
+  overflow-y: auto;
+  background: var(--docs-card-bg);
+  border: 1px solid var(--docs-border);
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+  padding: 4px;
+  list-style: none;
+}
+
+.demo-select-item {
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 12.5px;
+  color: var(--docs-text);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.demo-select-item.is-active {
+  background: var(--docs-hover-bg);
+}
+
+.demo-select-item.is-selected {
+  color: var(--docs-accent);
+}
+
+.demo-stats {
+  display: flex;
+  gap: 10px;
+  font-size: 12px;
+  color: var(--docs-muted);
+  margin-top: 10px;
+}
+
+.demo-stat {
+  background: var(--docs-chip-bg);
+  border: 1px solid var(--docs-border);
+  border-radius: 4px;
+  padding: 3px 9px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* gutterSlot 插槽示例：行号后的自定义星标（SVG 图标版）
+   占位与垂直居中由组件的 .k-editor__gutter-slot 包装列负责，这里只管颜色与间距 */
+.demo-gutter-star {
+  color: #eabe54;
+  margin-left: 4px;
+}
+
+/* ---- 亮色模式下编辑器组件同步切换（!important 覆盖组件内联主题变量） ----
+ * 业务侧等价做法：<KCodeEditor theme={LIGHT_EDITOR_THEME} />（库已导出亮色主题常量）
+ * 例外：.demo-theme-preview（主题预设 demo）是主题预览器——外观全权交给 theme prop，
+ * 暗色主题配官方暗底、亮色主题配官方亮底，亮色文档模式下同样生效，不参与这组覆写 */
+:root[data-theme='light'] .k-editor:not(.demo-theme-preview) {
+  --k-editor-bg: #ffffff !important;
+  --k-editor-color: #3b3b3b !important;
+  --k-caret-color: #1f1f1f !important;
+  --k-selection-bg: rgba(79, 192, 141, 0.25) !important;
+  --k-zebra-bg: rgba(0, 0, 0, 0.02) !important;
+  --k-active-line-bg: rgba(79, 192, 141, 0.10) !important;
+  --k-hit-bg: rgba(234, 158, 54, 0.35) !important;
+  --k-hit-active-bg: #f6c26b !important;
+  --k-gutter-bg: #f7f7f7 !important;
+  --k-gutter-color: #a0a0a0 !important;
+  --k-gutter-active-color: #333333 !important;
+  --k-statusbar-bg: #f0f0f0 !important;
+  --k-statusbar-color: #3b3b3b !important;
+  --k-statusbar-border: #dcdcdc !important;
+  --k-statusbar-hover-border: #c8c8c8 !important;
+  --k-statusbar-hover-bg: rgba(0, 0, 0, 0.05) !important;
+  --k-statusbar-active-bg: rgba(0, 0, 0, 0.09) !important;
+  --k-option-bg: #ffffff !important;
+  --k-option-color: #3b3b3b !important;
+  --k-border: #dcdcdc !important;
+  --k-search-bg: #f0f0f0 !important;
+  --k-search-input-bg: #ffffff !important;
+  --k-search-input-border: #d0d0d0 !important;
+  /* token 配色（vs-light 预设） */
+  --k-tok-string: #a31515 !important;
+  --k-tok-number: #098658 !important;
+  --k-tok-comment: #008000 !important;
+  --k-tok-keyword: #0000ff !important;
+  --k-tok-boolean: #0000ff !important;
+  --k-tok-punct: #3b3b3b !important;
+  --k-tok-key: #0451a5 !important;
+  --k-tok-tag: #267f99 !important;
+  --k-tok-attr: #e50000 !important;
+  /* diff 采用 GitLab 亮色配色（Pajamas token）：浅绿/浅红/浅蓝整行底色 */
+  --k-diff-added-bg: #e6ffee !important;
+  --k-diff-removed-bg: #fbe9eb !important;
+  --k-diff-modified-bg: #e9f3fc !important;
+  --k-diff-word-bg: #c7ecff !important;
+  --k-diff-added-color: #217e4b !important;
+  --k-diff-removed-color: #bb3a34 !important;
+  --k-diff-modified-color: #1b69b6 !important;
+  /* 评论卡（GitLab 亮色讨论卡配色；表单强调色统一绿色） */
+  --k-comment-bg: #ffffff !important;
+  --k-comment-head-bg: #f7f8fa !important;
+  --k-comment-border: #dcdcdc !important;
+  --k-comment-color: #3b3b3b !important;
+  --k-comment-muted: #8a8a8a !important;
+  --k-comment-accent: #217e4b !important;
+  --k-comment-accent-border: rgba(33, 126, 75, 0.55) !important;
+  --k-comment-input-bg: #ffffff !important;
+  --k-comment-resolved: #217e4b !important;
+  --k-comment-resolved-bg: rgba(38, 166, 91, 0.12) !important;
+}
+
+/* 亮色下搜索框内图标与选中字符前景色 */
+:root[data-theme='light'] .k-editor__search-icon,
+:root[data-theme='light'] .k-editor__search-count {
+  color: #8a8a8a !important;
+}
+
+:root[data-theme='light'] .k-editor__char.is-selected {
+  color: #24292f !important;
+}
+
+:root[data-theme='light'] .k-editor__gutter-fold:hover,
+:root[data-theme='light'] .k-editor__fold-ellipsis {
+  background: rgba(0, 0, 0, 0.06) !important;
+  color: #555555 !important;
+}
