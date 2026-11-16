@@ -56,6 +56,19 @@
   color: var(--docs-accent);
 }
 
+.landing__nav-logo-text {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--docs-title);
+  letter-spacing: 0.5px;
+  line-height: 1;
+}
+
+.landing__nav-logo-text em {
+  font-style: normal;
+  color: var(--docs-accent);
+}
+
 .landing__nav-logo-img {
   display: block;
   width: 26px;

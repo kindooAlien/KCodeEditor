@@ -78,7 +78,6 @@ export default defineComponent({
             />
             <div class="docs__brand">
               K<em>CodeEditor</em>
-              <span class="docs__version">v0.1.0</span>
             </div>
           </RouterLink>
           {NAV.map((group) => (
@@ -103,13 +102,16 @@ export default defineComponent({
         <div class="docs__content">
           <header class="docs__topbar">
             <span class="docs__topbar-title">{pageTitle.value}</span>
-            <button
-              class="docs__theme-toggle"
-              title={mode.value === 'dark' ? '切换亮色' : '切换暗色'}
-              onClick={toggleTheme}
-            >
-              {mode.value === 'dark' ? <SunIcon /> : <MoonIcon />}
-            </button>
+            <div class="docs__topbar-actions">
+              <span class="docs__version">v0.1.0</span>
+              <button
+                class="docs__theme-toggle"
+                title={mode.value === 'dark' ? '切换亮色' : '切换暗色'}
+                onClick={toggleTheme}
+              >
+                {mode.value === 'dark' ? <SunIcon /> : <MoonIcon />}
+              </button>
+            </div>
           </header>
           <main class="docs__main">
             <RouterView />
