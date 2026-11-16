@@ -2,7 +2,7 @@
   "name": "k-code-editor",
   "version": "0.1.0",
   "type": "module",
-  "description": "KEditor —— 数据驱动的逐字符代码编辑组件（Vue3 + TypeScript + TSX）",
+  "description": "KCodeEditor —— 数据驱动的逐字符代码编辑组件（Vue3 + TypeScript + TSX）",
   "keywords": [
     "vue",
     "vue3",

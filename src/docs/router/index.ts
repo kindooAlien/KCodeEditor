@@ -7,7 +7,7 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 const router = createRouter({
   history: createWebHashHistory(),
   routes: [
-    { path: '/', name: 'home', component: () => import('@/docs/pages/HomePage'), meta: { title: 'KEditor' } },
+    { path: '/', name: 'home', component: () => import('@/docs/pages/HomePage'), meta: { title: 'KCodeEditor' } },
     { path: '/intro', name: 'intro', component: () => import('@/docs/pages/IntroPage'), meta: { title: '介绍', group: '' } },
     {
       path: '/editor/basic',

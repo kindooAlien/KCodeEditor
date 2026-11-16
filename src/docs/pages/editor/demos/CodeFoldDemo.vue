@@ -5,7 +5,7 @@ import { KCodeEditor } from '@/keditor'
 /** 多层嵌套 JSON，括号各自独占一行，便于观察折叠区间 */
 const SAMPLE = [
   '{',
-  '  "project": "KEditor",',
+  '  "project": "KCodeEditor",',
   '  "plugins": {',
   '    "search": {',
   '      "enabled": true,',

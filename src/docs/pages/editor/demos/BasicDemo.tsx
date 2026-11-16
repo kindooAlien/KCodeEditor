@@ -4,7 +4,7 @@ import { KCodeEditor } from '@/keditor'
 /** 示例数据：包含转义字符与 HTML 片段，验证原样输出 */
 const SAMPLE_JSON = [
   '{',
-  '  "name": "KEditor",',
+  '  "name": "KCodeEditor",',
   '  "slogan": "每个字符都是一个 <span>",',
   '  "escape": "行内引号: \\" 与制表符: A\\tB 与换行标记: \\n",',
   '  "version": 1,',

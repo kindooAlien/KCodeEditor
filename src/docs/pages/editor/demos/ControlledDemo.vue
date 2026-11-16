@@ -4,7 +4,7 @@ import { KCodeEditor } from '@/keditor'
 
 const SAMPLE_JSON = [
   '{',
-  '  "name": "KEditor",',
+  '  "name": "KCodeEditor",',
   '  "version": 1,',
   '  "active": true',
   '}',
@@ -21,7 +21,7 @@ const currentText = ref(SAMPLE_JSON)
 
 function logContent(): void {
   // eslint-disable-next-line no-console
-  console.log('[KEditor] getText():\n', editorRef.value?.getText())
+  console.log('[KCodeEditor] getText():\n', editorRef.value?.getText())
 }
 </script>
 

@@ -5,7 +5,7 @@ import type { AccentPreset } from '@/keditor'
 
 const SAMPLE = [
   '{',
-  '  "name": "KEditor",',
+  '  "name": "KCodeEditor",',
   '  "accent": "主题色预设：green / blue / purple",',
   '  "version": 1',
   '}',
@@ -23,7 +23,7 @@ function preview(): void {
   const editor = editorRef.value
   editor?.setText(SAMPLE)
   if (editor) {
-    editor.search.keyword.value = 'KEditor'
+    editor.search.keyword.value = 'KCodeEditor'
     editor.search.runSearch()
   }
 }

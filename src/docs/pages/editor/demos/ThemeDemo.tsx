@@ -6,7 +6,7 @@ import { PRESET_LABELS, baseForPreset } from './preset-theme-base'
 
 const SAMPLE_JSON = [
   '{',
-  '  "name": "KEditor",',
+  '  "name": "KCodeEditor",',
   '  "theme": "字号 / 行高 / 配色 / 光标默认位置 全部可配",',
   '  "version": 1',
   '}',

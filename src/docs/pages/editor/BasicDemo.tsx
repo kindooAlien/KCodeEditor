@@ -10,7 +10,7 @@ export default defineComponent({
     return () => (
       <div>
         <p class="page-desc">
-          KEditor 是数据驱动的逐字符代码编辑组件：字符模型是唯一数据源，DOM 只是投影。
+          KCodeEditor 是数据驱动的逐字符代码编辑组件：字符模型是唯一数据源，DOM 只是投影。
           每个字符渲染为独立 <code>span</code>，转义字符（如 <code>\"</code>、<code>\n</code>）原样呈现，
           不做任何二次转义/反转义。
         </p>

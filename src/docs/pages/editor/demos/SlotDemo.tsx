@@ -5,7 +5,7 @@ import type { VNodeChild } from 'vue'
 
 const SAMPLE = [
   '{',
-  '  "name": "KEditor",',
+  '  "name": "KCodeEditor",',
   '  "plugins": {',
   '    "search": { "enabled": true },',
   '    "fold": { "trigger": "line-start" }',

@@ -74,7 +74,7 @@ export default defineComponent({
             <img
               class="docs__logo"
               src={mode.value === 'dark' ? logoDarkUrl : logoLightUrl}
-              alt="KEditor logo"
+              alt="KCodeEditor logo"
             />
             <div class="docs__brand">
               K<em>Editor</em>

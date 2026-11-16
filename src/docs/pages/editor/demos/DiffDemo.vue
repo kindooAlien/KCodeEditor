@@ -5,7 +5,7 @@ import type { DiffLineMark } from '@/keditor'
 
 const SAMPLE = [
   '{',
-  '  "name": "KEditor",',
+  '  "name": "KCodeEditor",',
   '  "version": 2,',
   '  "mode": "diff",',
   '  "features": ["fold", "wrap", "search"],',

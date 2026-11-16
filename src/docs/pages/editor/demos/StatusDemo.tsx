@@ -3,7 +3,7 @@ import { KCodeEditor, SUPPORTED_LANGUAGES } from '@/keditor'
 
 const SAMPLE_JSON = [
   '{',
-  '  "name": "KEditor",',
+  '  "name": "KCodeEditor",',
   '  "hint": "底部状态栏：左侧实时显示光标位置，右侧可切换语言、一键格式化",',
   '  "messy": { "indent": "乱缩进", "extra": [ 1,2, 3 ] },',
   '  "version":   1',

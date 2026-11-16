@@ -4,7 +4,7 @@ import { KCodeEditor } from '@/keditor'
 
 const SAMPLE_JSON = [
   '{',
-  '  "name": "KEditor",',
+  '  "name": "KCodeEditor",',
   '  "hint": "点击任意一行，观察行号与内容区的联动高亮",',
   '  "version": 1',
   '}',

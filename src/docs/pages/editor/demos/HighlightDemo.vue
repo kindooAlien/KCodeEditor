@@ -6,7 +6,7 @@ import DemoSelect from '@/docs/components/DemoSelect'
 import { PRESET_LABELS, baseForPreset } from './preset-theme-base'
 
 /** JS/TS 混合样本：字符串 / 注释 / 数字 / 关键字 / 布尔 / 对象 key */
-const SAMPLE_CODE = `const greeting = 'Hello, KEditor!'
+const SAMPLE_CODE = `const greeting = 'Hello, KCodeEditor!'
 // 这是行注释，验证注释着色
 function add(a: number, b: number) {
   return a + b  /* 行内注释 */

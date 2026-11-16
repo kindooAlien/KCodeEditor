@@ -4,7 +4,7 @@ import { KCodeEditor } from '@/keditor'
 
 const SAMPLE_JSON = [
   '{',
-  '  "name": "KEditor",',
+  '  "name": "KCodeEditor",',
   '  "features": ["lineNumber", "search", "theme"],',
   '  "nested": { "ok": null }',
   '}',

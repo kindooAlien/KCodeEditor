@@ -7,7 +7,7 @@ import logoDarkUrl from '@/docs/assets/logo.svg'
 import logoLightUrl from '@/docs/assets/logo-light.svg'
 import '@/docs/styles/home.css'
 
-const VERSION = 'v0.4'
+const VERSION = 'v0.1.0'
 
 /** Hero 统计卡（与示例页/功能实际情况同源维护） */
 const STATS = [
@@ -239,9 +239,9 @@ export default defineComponent({
             <img
               class="landing__nav-logo-img"
               src={mode.value === 'dark' ? logoDarkUrl : logoLightUrl}
-              alt="KEditor logo"
+              alt="KCodeEditor logo"
             />
-            KEditor
+            KCodeEditor
           </RouterLink>
           <nav class="landing__nav-links">
             <button type="button" class="landing__nav-link" onClick={() => scrollTo(featuresRef.value)}>特性</button>
@@ -278,7 +278,7 @@ export default defineComponent({
             <span class="home__badge hero-item" style="animation-delay: 0.05s">
               {VERSION} · 数据驱动 · 双框架 · 零依赖
             </span>
-            <h1 class="home__title hero-item" style="animation-delay: 0.14s">KEditor</h1>
+            <h1 class="home__title hero-item" style="animation-delay: 0.14s">KCodeEditor</h1>
             <p class="home__slogan hero-item" style="animation-delay: 0.24s">数据驱动的逐字符代码编辑器</p>
             <p class="home__sub hero-item" style="animation-delay: 0.32s">
               字符模型是唯一数据源 · DOM 只是投影 · Vue3 + TypeScript + TSX · 40+ 配置项开箱即用
@@ -389,7 +389,7 @@ export default defineComponent({
           </section>
 
           <footer class="home__footer">
-            KEditor · 数据驱动的逐字符代码编辑器 · Vue3 + TypeScript + TSX
+            KCodeEditor · 数据驱动的逐字符代码编辑器 · Vue3 + TypeScript + TSX
           </footer>
         </section>
       </div>

@@ -17,7 +17,7 @@ export default defineComponent({
     return () => (
       <div>
         <p class="page-desc">
-          <b>KEditor</b> 是一个轻量级、数据驱动的逐字符代码编辑组件（Vue3 + TypeScript + TSX），
+          <b>KCodeEditor</b> 是一个轻量级、数据驱动的逐字符代码编辑组件（Vue3 + TypeScript + TSX），
           架构对标 CodeMirror 的「State + View 分离」：模型拥有语义，浏览器只负责几何。
         </p>
 

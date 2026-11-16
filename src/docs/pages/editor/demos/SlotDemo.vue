@@ -6,7 +6,7 @@ import { StarIcon, ChevronRightIcon, ChevronDownIcon } from '@/docs/components/i
 
 const SAMPLE = [
   '{',
-  '  "name": "KEditor",',
+  '  "name": "KCodeEditor",',
   '  "plugins": {',
   '    "search": { "enabled": true },',
   '    "fold": { "trigger": "line-start" }',

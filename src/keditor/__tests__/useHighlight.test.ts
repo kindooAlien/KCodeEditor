@@ -35,7 +35,7 @@ describe('tokenizeLine 关键字分词', () => {
   })
 
   it('json：无 keyword 组，quoted key 命中 key', () => {
-    const toks = tokenizeLine('  "name": "KEditor",', 'json')
+    const toks = tokenizeLine('  "name": "KCodeEditor",', 'json')
     expect(toks[0].type).toBe('key')
     expect(toks.some((t) => t.type === 'string')).toBe(true)
     expect(types('const x = 1', 'json')).not.toContain('keyword')

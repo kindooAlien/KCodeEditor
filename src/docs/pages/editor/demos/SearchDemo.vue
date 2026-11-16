@@ -3,7 +3,7 @@ import { KCodeEditor } from '@/keditor'
 
 const SAMPLE_JSON = [
   '{',
-  '  "name": "KEditor",',
+  '  "name": "KCodeEditor",',
   '  "slogan": "每个字符都是一个 <span>",',
   '  "search": "回车检索, 再按回车跳下一条, Esc 清除",',
   '  "version": 1,',

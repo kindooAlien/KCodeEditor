@@ -1,4 +1,4 @@
-// KEditor 设计令牌（Design Tokens）——暗色默认值的单一事实来源
+// KCodeEditor 设计令牌（Design Tokens）——暗色默认值的单一事实来源
 // - `@include k-tokens` 把整个 map 发射为 .k-editor 作用域的 CSS 自定义属性（--k-*）
 // - 运行时 theme prop 以内联样式注入同名变量（内联优先级恒高于此处发射的默认值）
 // - 亮色场景：业务可传 LIGHT_EDITOR_THEME（token 级覆盖），或在外层容器用 CSS 变量覆写

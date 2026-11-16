@@ -1,5 +1,5 @@
 /**
- * KEditor 库入口（npm 发包的 package entry）
+ * KCodeEditor 库入口（npm 发包的 package entry）
  *
  * 导出策略：
  * - 组件：KCodeEditor
