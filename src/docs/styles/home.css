@@ -576,7 +576,18 @@
   }
 
   .home__cta {
-    flex-direction: column;
+    flex-direction: row;
+    gap: 10px;
+  }
+
+  .home__cta-main,
+  .home__cta-ghost {
+    flex: 1;
+    min-width: 0;
+    justify-content: center;
+    padding: 11px 8px;
+    font-size: 14px;
+    white-space: nowrap;
   }
 
   .home__features,

@@ -1,6 +1,6 @@
-import { defineComponent, computed } from 'vue'
+import { defineComponent, computed, ref, watch } from 'vue'
 import { useRoute, RouterView, RouterLink } from 'vue-router'
-import { SunIcon, MoonIcon } from './components/icons'
+import { SunIcon, MoonIcon, MenuIcon, CloseIcon } from './components/icons'
 import { useDocsTheme } from './theme'
 import logoDarkUrl from './assets/logo.svg'
 import logoLightUrl from './assets/logo-light.svg'
@@ -62,6 +62,14 @@ export default defineComponent({
     const route = useRoute()
     const pageTitle = computed(() => (route.meta.title as string) ?? '')
     const { mode, toggleTheme } = useDocsTheme()
+    /** 移动端抽屉菜单开合（汉堡 -> 关闭 icon，参考官网） */
+    const mobileMenuOpen = ref(false)
+    watch(
+      () => route.path,
+      () => {
+        mobileMenuOpen.value = false
+      },
+    )
 
     return () =>
       // 门户首页（/）全屏独立渲染，不带文档站侧栏与顶栏
@@ -69,7 +77,21 @@ export default defineComponent({
         <RouterView />
       ) : (
       <div class="docs">
-        <aside class="docs__sidebar">
+        {mobileMenuOpen.value && (
+          <div
+            class="docs__drawer-mask"
+            onClick={() => (mobileMenuOpen.value = false)}
+          />
+        )}
+        <aside class={['docs__sidebar', mobileMenuOpen.value ? 'is-open' : '']}>
+          <button
+            type="button"
+            class="docs__drawer-close"
+            title="关闭菜单"
+            onClick={() => (mobileMenuOpen.value = false)}
+          >
+            <CloseIcon />
+          </button>
           <RouterLink to="/" class="docs__brand-row" title="返回门户首页">
             <img
               class="docs__logo"
@@ -101,6 +123,14 @@ export default defineComponent({
 
         <div class="docs__content">
           <header class="docs__topbar">
+            <button
+              type="button"
+              class="docs__menu-toggle"
+              title={mobileMenuOpen.value ? '关闭菜单' : '打开菜单'}
+              onClick={() => (mobileMenuOpen.value = !mobileMenuOpen.value)}
+            >
+              {mobileMenuOpen.value ? <CloseIcon /> : <MenuIcon />}
+            </button>
             <span class="docs__topbar-title">{pageTitle.value}</span>
             <div class="docs__topbar-actions">
               <span class="docs__version">v0.1.0</span>

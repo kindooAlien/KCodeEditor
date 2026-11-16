@@ -37,9 +37,33 @@
   background: var(--docs-border);
 }
 
+/* 移动端抽屉开关与遮罩（仅窄屏显示，桌面用完整侧栏） */
+.docs__menu-toggle {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  flex: none;
+  background: var(--docs-chip-bg);
+  border: 1px solid var(--docs-border);
+  border-radius: 8px;
+  color: var(--docs-muted);
+  cursor: pointer;
+}
+
+.docs__drawer-close {
+  display: none;
+}
+
+.docs__drawer-mask {
+  display: none;
+}
+
 /* 品牌 logo 盒子：与右侧顶栏同高同分隔线，构成一条完整顶部水平带；
  * 整体可点击返回门户首页（RouterLink） */
 .docs__brand-row {
+  position: relative;
   height: var(--topbar-h);
   display: flex;
   align-items: center;
@@ -199,6 +223,8 @@
   font-size: 15px;
   font-weight: 600;
   color: var(--docs-title);
+  margin-left: 12px;
+  margin-right: auto;
 }
 
 /* 亮色模式：--docs-bg 是浅灰（#f5f6f8），顶栏按用户预期改为白色底（保留轻微透明让磨砂层次可见） */
@@ -221,22 +247,57 @@
   border-bottom: 1px solid var(--docs-sidebar-border);
 }
 
-/* 窄屏：侧边栏收为顶部横向导航 */
+/* 窄屏：侧栏改为左侧抽屉（参考官网），汉堡开、关闭 icon/遮罩收 */
 @media (max-width: 768px) {
   .docs {
     flex-direction: column;
   }
 
   .docs__sidebar {
-    position: static;
-    width: 100%;
-    height: auto;
-    border-right: none;
-    border-bottom: 1px solid var(--docs-sidebar-border);
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 272px;
+    height: 100%;
+    background: var(--docs-sidebar-bg);
+    transform: translateX(-100%);
+    transition: transform 0.25s ease;
+    z-index: 30;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
   }
 
-  .docs__brand-row {
-    position: static;
+  .docs__sidebar.is-open {
+    transform: translateX(0);
+  }
+
+  .docs__drawer-mask {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 25;
+    background: rgba(0, 0, 0, 0.42);
+  }
+
+  .docs__menu-toggle {
+    display: inline-flex;
+  }
+
+  .docs__drawer-close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    flex: none;
+    position: absolute;
+    right: 12px;
+    top: 12px;
+    background: var(--docs-chip-bg);
+    border: 1px solid var(--docs-border);
+    border-radius: 8px;
+    color: var(--docs-muted);
+    cursor: pointer;
   }
 
   .docs__main {

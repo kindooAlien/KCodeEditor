@@ -30,6 +30,20 @@ export const MoonIcon = createIcon(
   { viewBox: '0 0 16 16', width: '15', height: '15', fill: 'none' },
 )
 
+/** 汉堡菜单（移动端抽屉开） */
+export const MenuIcon = createIcon(
+  'MenuIcon',
+  '<path d="M2 4.5h12M2 8h12M2 11.5h12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>',
+  { viewBox: '0 0 16 16', width: '16', height: '16', fill: 'none' },
+)
+
+/** 关闭（移动端抽屉收起，与 MenuIcon 成对） */
+export const CloseIcon = createIcon(
+  'CloseIcon',
+  '<path d="M4 4l8 8M12 4l-8 8" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>',
+  { viewBox: '0 0 16 16', width: '16', height: '16', fill: 'none' },
+)
+
 /** 向下箭头（展开/收起代码） */
 export const ChevronDownIcon = createIcon(
   'ChevronDownIcon',
